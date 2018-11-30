@@ -1,2 +1,2 @@
-# war_tank
-金曜日選択授業課題作成用リポジトリ
+# TankWar
+戦車で戦うゲーム By enchantjs
