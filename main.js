@@ -11,7 +11,7 @@ IMAGE = {
 RADIAN = Math.PI / 180;
 
 const Tank = Class.create(Sprite, {
-    initialize: function(scene, x, y, hp, id) {
+    initialize: function(scene, x, y, hp, id, framenumver) {
         Sprite.call(this, 32, 32);
         this.scene = scene;
         this.scene.addChild(this);
@@ -26,7 +26,7 @@ const Tank = Class.create(Sprite, {
         this.rotationSpeed = 3;
         this.bulletM = new BulletManager(this.scene, 10, 20, this.id);
         this.hpBar = new HpBar(this.scene, this.x + this.width / 2, this.y + 10);
-        this.frame = 0;
+        this.frame = framenumver;
         this.image = game.assets[IMAGE.tank];
         this.on("enterframe", function() {
             this.hpBar.draw(this.x + this.width / 2 - this.hpBar.x2 / 2, this.y - 10, this.getHpRatio());
@@ -295,8 +295,8 @@ const main = () => {
         const gameScene = function() {
             // 初期化
             const scene = new Scene();
-            const tank = new Tank(scene, game.width / 2, game.height / 2, 10, "player1");
-            const tank2 = new Tank(scene, game.width / 3, game.height / 3, 10, "player2");
+            const tank = new Tank(scene, game.width / 2, game.height / 2, 10, "player1", 0);
+            const tank2 = new Tank(scene, game.width / 3, game.height / 3, 10, "player2", 4);
 
             var derayTime = 30; // ゲームオーバー判定から次のシーンまでの余韻
             var isGame = true;
@@ -306,10 +306,11 @@ const main = () => {
             game.keybind(68, "d");
             game.keybind(83, "s");
             game.keybind(87, "w");
-            game.keybind(90, "z");
-            game.keybind(88, "x");
+            game.keybind(70, "f");
+            game.keybind(81, "q");
             game.keybind(32, "space");
             game.keybind(16, "shift");
+            game.keybind(226, "_");
 
             scene.on("enterframe", function() {
                 // player1のコントローラー
@@ -317,8 +318,8 @@ const main = () => {
                 if (game.input.right) tank.rotate(1);
                 if (game.input.up) tank.move(1);
                 if (game.input.down) tank.move(-1);
-                if (game.input.z) tank.shot();
-                if (game.input.x) {
+                if (game.input._) tank.shot();
+                if (game.input.shift) {
                     tank.rotationShiftUp();
                 } else if (game.input.shift){
                     tank.rotationShiftDown();
@@ -331,10 +332,10 @@ const main = () => {
                 if (game.input.d) tank2.rotate(1);
                 if (game.input.w) tank2.move(1);
                 if (game.input.s) tank2.move(-1);
-                if (game.input.z) tank2.shot();
-                if (game.input.x) {
+                if (game.input.q) tank2.shot();
+                if (game.input.f) {
                     tank2.rotationShiftUp();
-                } else if (game.input.shift){
+                } else if (game.input.f){
                     tank2.rotationShiftDown();
                 } else {
                     tank2.rotationSetNeutral();
